@@ -7,7 +7,7 @@ Safety gates. Adversarial multi-agent review. Automated `git bisect` bug hunting
 ## Install (one command)
 
 ```
-/plugin marketplace add YOUR_USERNAME/claude-power-skills
+/plugin marketplace add jaiswal00007/claude-power-skills
 /plugin install claude-power-skills@claude-power-skills
 ```
 
