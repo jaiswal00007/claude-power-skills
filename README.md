@@ -1,27 +1,35 @@
 # ⚡ Claude Power Skills
 
-**14 battle-tested [Claude Code](https://claude.com/claude-code) slash commands that turn your AI agent from a code generator into a disciplined engineering teammate.**
+**A single [Claude Code](https://claude.com/claude-code) plugin: 17 engineering-discipline skills + automatic hooks that turn your AI agent from a code generator into a disciplined engineering teammate.**
 
-Safety gates. Adversarial multi-agent review. Automated `git bisect` bug hunting. Coverage repair. Spec-driven TDD. Instant onboarding with architecture diagrams. All as `/slash-commands`, all language-agnostic, all zero-token until you invoke them.
+Safety gates. Adversarial multi-agent review. Automated `git bisect` bug hunting. Coverage repair. Spec-driven TDD. Instant onboarding with architecture diagrams. Plus **hooks** that auto-format, lint, explain every change, and brake on risky work — all in one install.
 
-```bash
-git clone https://github.com/YOUR_USERNAME/claude-power-skills.git
-cd claude-power-skills && ./install.sh
+## Install (one command)
+
+```
+/plugin marketplace add YOUR_USERNAME/claude-power-skills
+/plugin install claude-power-skills@claude-power-skills
 ```
 
-Then open Claude Code and type `/` — they're all there.
+Everything — all 17 skills **and** the hooks — installs together. Type `/` to see them; the hooks start firing automatically. (Testing locally first? `/plugin marketplace add /path/to/claude-power-skills`.)
 
 ---
 
-## Why these exist
+## Why this exists
 
-AI agents are fast but reckless. They rewrite 40 files when asked to change 2, validate their own work, and declare victory without running the tests. These skills add the missing engineering discipline — the checklist a senior engineer runs on autopilot — as one-word commands.
+AI agents are fast but reckless. They rewrite 40 files when asked to change 2, validate their own work, and declare victory without running the tests. This plugin adds the missing engineering discipline two ways: **skills** you invoke deliberately, and **hooks** that run automatically on every edit whether you remember them or not.
 
-Every skill is **language-agnostic** (Node, Python, Rust, Go, Java — auto-detected), degrades gracefully when `gh`/git/tests are missing, and costs **zero tokens until invoked** (Claude Code only loads a skill's body when you call it).
+Every skill is **language-agnostic** (Node, Python, Rust, Go, Java — auto-detected), degrades gracefully when `gh`/git/tests are missing, and costs **zero tokens until invoked**.
+
+## The hooks (automatic, every edit/turn)
+
+- **Auto-format + lint** — `PostToolUse` runs prettier/eslint/ruff/black/gofmt/rustfmt on each edited file.
+- **Explain every change** — a cheap, AI-free `git diff` summary injected into context after every edit.
+- **Review-gate** — a `Stop` hook that pauses on risky work (auth/secrets/migrations, failing tests, big blast radius) and makes Claude lay out options to discuss instead of barreling on.
 
 ---
 
-## The 14 skills
+## The 17 skills
 
 ### 🛡️ Safety & trust
 | Command | What it does |
@@ -55,22 +63,31 @@ Every skill is **language-agnostic** (Node, Python, Rust, Go, Java — auto-dete
 
 ⭐ = the ones that make people go *"wait, it can do that?"*
 
+### 🔁 Dev loop (chain these + the hooks)
+| Command | What it does |
+|---|---|
+| `/write-tests [file]` | Behavior-focused tests, framework auto-detected — TDD-first or right after implementation. |
+| `/code-review [paths]` | Fast diff-scoped 3-agent review + a `SHIP / NEEDS CHANGES / DO NOT MERGE` verdict. Repeat-callable. |
+| `/ship` | Opens a PR for the current branch with an auto-generated description; graceful fallback if `gh` is missing. |
+
+**The loop:** `/create-spec` → *(plan mode)* → `/write-tests` → implement *(hooks format/lint/explain each edit)* → `/code-review` → `/ship` → `/standup`. The `Stop` review-gate hook pauses on risky work so you re-plan together instead of the loop halting.
+
 ---
 
 ## Install
 
-```bash
-./install.sh          # symlinks skills into ~/.claude/skills (edit-in-place, stays in sync)
-./install.sh copy     # copies them instead of symlinking
+```
+/plugin marketplace add YOUR_USERNAME/claude-power-skills
+/plugin install claude-power-skills@claude-power-skills
 ```
 
-Skills are available **globally, in every project, immediately** — no restart needed. To install just one, copy any `skills/*.md` file into `~/.claude/skills/`.
+One install gets all 17 skills **and** the hooks. They're available globally, in every project. Edit a skill's `SKILL.md` and it takes effect immediately; after editing `hooks/` or `scripts/`, run `/reload-plugins`.
 
 ---
 
 ## How it works
 
-Each skill is a Markdown file with YAML frontmatter and inline shell injection:
+Each skill is a `skills/<name>/SKILL.md` with YAML frontmatter and inline shell injection:
 
 ```markdown
 ---
@@ -84,7 +101,7 @@ trigger: /standup
 ...
 ```
 
-The `` !`command` `` syntax runs live shell commands and injects the output into Claude's context when you invoke the skill — so Claude reasons over *your actual repo state*, not guesses. `$ARGUMENTS` passes whatever you type after the command.
+The `` !`command` `` syntax runs live shell commands and injects the output into Claude's context when you invoke the skill — so Claude reasons over *your actual repo state*, not guesses. `$ARGUMENTS` passes whatever you type after the command. The **hooks** (`hooks/hooks.json` + `scripts/`) run automatically — no invocation needed.
 
 ---
 
@@ -100,7 +117,7 @@ No language runtime is required to install — skills auto-detect Node / Python 
 
 ## Contributing
 
-PRs welcome. A good skill is: one clear job, language-agnostic, graceful when tools are missing, and stops for human approval before anything destructive. Add your `.md` to `skills/`, add a row to the table above, open a PR.
+PRs welcome. A good skill is: one clear job, language-agnostic, graceful when tools are missing, and stops for human approval before anything destructive. Add `skills/<name>/SKILL.md`, add a row to a table above, open a PR.
 
 ## License
 

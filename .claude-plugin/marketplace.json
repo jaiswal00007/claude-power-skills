@@ -5,10 +5,10 @@
   },
   "plugins": [
     {
-      "name": "devloop",
-      "source": "./devloop",
-      "description": "AI-native dev loop: spec -> implement -> review -> ship -> standup, with auto-format, diff-explain, and a Stop review-gate that pauses to re-plan on risky changes.",
-      "version": "0.1.0",
+      "name": "claude-power-skills",
+      "source": "./",
+      "description": "17 engineering-discipline commands + automatic hooks (format, lint, explain-every-change, Stop review-gate). One install gets the full loop.",
+      "version": "0.2.0",
       "author": {
         "name": "claude-power-skills contributors"
       }
