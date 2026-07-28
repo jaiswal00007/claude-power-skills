@@ -31,39 +31,39 @@ Every skill is **language-agnostic** (Node, Python, Rust, Go, Java — auto-dete
 
 ## The 17 skills
 
-### 🛡️ Safety & trust
+### Safety & trust
 | Command | What it does |
 |---|---|
 | `/safe-task <task>` | Safety gate before any work — snapshot, danger-zone scan (auth/db/payments), scope estimate. Stops and asks before risky work. |
 | `/scope-check <task>` | Blast-radius analysis before writing code — files, downstream importers, tests, a 1–10 risk score. |
-| `/shadow-reviewer` | **⭐ Adversarial multi-agent review.** Spawns 3 skeptical reviewers in parallel (security · edge-cases · 3am-pager), runs your tests, and a judge delivers a `SHIP / NEEDS CHANGES / DO NOT MERGE` verdict. |
+| `/shadow-reviewer` | **Adversarial multi-agent review.** Spawns 3 skeptical reviewers in parallel (security · edge-cases · 3am-pager), runs your tests, and a judge delivers a `SHIP / NEEDS CHANGES / DO NOT MERGE` verdict. |
 | `/ai-audit` | Weekly forensic audit of recent changes, risk-ranked — the scary auth/db/config diffs surface first. |
 
-### 🔧 Workflow
+### Workflow
 | Command | What it does |
 |---|---|
 | `/autopilot <issue#>` | GitHub issue → plan (you approve) → TDD → verified PR. Gated at every risky step. |
-| `/time-machine <bug>` | **⭐ Finds the bug's birth certificate** via automated `git bisect run` — the exact first-bad commit, author, and the hunk that broke it. |
+| `/time-machine <bug>` | **Finds the bug's birth certificate** via automated `git bisect run` — the exact first-bad commit, author, and the hunk that broke it. |
 | `/create-spec <feature>` | Spec-driven development — write the spec, get approval, turn each rule into a failing test, then implement. |
 | `/sonar-fix <file>` | Fixes coverage-gate failures by writing tests that verify *real behavior* — not filler to game the metric. |
 
-### 📅 Daily driver
+### Daily driver
 | Command | What it does |
 |---|---|
 | `/standup` | Your daily standup from git history + open PRs + failing tests. Sounds like a human, not a report bot. |
-| `/onboard-me` | **⭐ 5-minute codebase tour with a Mermaid architecture diagram** (renders on GitHub), the 5 files to read first, and the 3 things never to touch. |
+| `/onboard-me` | **5-minute codebase tour with a Mermaid architecture diagram** (renders on GitHub), the 5 files to read first, and the 3 things never to touch. |
 | `/session-wrap` | End-of-session handoff — what was done, what's next, decisions made — saved to disk and folded into `CLAUDE.md`. |
 
-### 🧪 Meta / quality
+###  Meta / quality
 | Command | What it does |
 |---|---|
-| `/mutation-test <file>` | **⭐ Proves your tests are real** by injecting 5 subtle bugs one at a time and checking which slip through. Gives a mutation score + the exact tests to add. |
+| `/mutation-test <file>` | ** Proves your tests are real** by injecting 5 subtle bugs one at a time and checking which slip through. Gives a mutation score + the exact tests to add. |
 | `/suggest-agents` | Reads your repo and recommends the custom subagents worth creating, ranked by impact. |
 | `/create-agent <desc>` | Generates a complete, ready-to-save `.claude/agents/` subagent file tailored to your codebase. |
 
-⭐ = the ones that make people go *"wait, it can do that?"*
+ = the ones that make people go *"wait, it can do that?"*
 
-### 🔁 Dev loop (chain these + the hooks)
+###  Dev loop (chain these + the hooks)
 | Command | What it does |
 |---|---|
 | `/write-tests [file]` | Behavior-focused tests, framework auto-detected — TDD-first or right after implementation. |
