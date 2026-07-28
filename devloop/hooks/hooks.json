@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/format-lint.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/explain-diff.sh\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "You are devloop's review-gate. The main assistant just tried to end its turn. Decide whether the current uncommitted work is safe to pause on, or whether the assistant should STOP coding and discuss options with the user first.\n\nInspect the working tree (read-only):\n- Run: git diff HEAD --stat ; git diff HEAD --name-only\n- Run the repo's test runner ONLY IF one is obviously present and fast (package.json -> npm test, pyproject.toml/pytest.ini -> pytest, Cargo.toml -> cargo test, go.mod -> go test ./...). Skip if slow or absent.\n- Scan the diff for RISK signals: touched auth/secret/token/password/payment/billing/migration/schema/.env/deploy files; deleted or disabled tests; large blast radius (more than ~10 files); TODO/FIXME or stubbed/placeholder logic left in; failing tests.\n\nReturn STRICT JSON only, nothing else:\n- No risk signals AND (tests pass OR not run) -> {\"ok\": true}\n- ANY risk signal OR tests fail -> {\"ok\": false, \"reason\": \"<2-4 sentences>\"}\n\nWhen ok is false, phrase reason as a re-plan posture, for example: \"Stop coding. <one-line concern citing the specific file or test>. Before continuing, lay out 2-3 concrete options for the user to choose from and wait for their input -- do not keep editing.\" Be concrete, not scolding. Keep it short so it reads cleanly as the assistant's next instruction. Bias toward ok:true unless a concrete signal fires, so clean turns end immediately."
+          }
+        ]
+      }
+    ]
+  }
+}
