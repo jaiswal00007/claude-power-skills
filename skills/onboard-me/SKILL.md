@@ -11,7 +11,7 @@ Onboard me to this codebase. I'm a new developer. Be concrete and cite real file
 - File-type breakdown: !`git ls-files 2>/dev/null | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -10`
 - Top-level layout: !`git ls-files 2>/dev/null | awk -F/ 'NF>1{print $1"/"}' | sort -u | head -25`
 - Manifests / entry points: !`ls package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle Makefile 2>/dev/null`
-- Package scripts (if node): !`cat package.json 2>/dev/null | python3 -c "import sys,json;print(json.dumps(json.load(sys.stdin).get('scripts',{}),indent=2))" 2>/dev/null || echo "n/a"`
+- Package scripts (if node): !`grep -A20 '"scripts"' package.json 2>/dev/null | head -22 || echo "n/a"`
 - Route/handler surface: !`git grep -nIE "(router\.|app\.(get|post|put|delete)|@(app|router)\.(route|get|post)|http\.HandleFunc|@RequestMapping)" 2>/dev/null | head -20 || echo "no obvious web routes"`
 - Data models: !`git ls-files 2>/dev/null | grep -iE '(schema|model|entity|migration)' | head -12`
 - Test count: !`git ls-files 2>/dev/null | grep -iE '(test|spec)' | wc -l | tr -d ' '`
