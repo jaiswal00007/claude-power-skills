@@ -7,7 +7,7 @@ Open a pull request for the current branch. Extra context (e.g. `Closes #123`): 
 
 ## Context
 - Current branch: !`git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "not a git repo"`
-- Default branch: !`python3 -c "import subprocess; r=subprocess.run(['gh','repo','view','--json','defaultBranchRef','-q','.defaultBranchRef.name'],capture_output=True,text=True); b=r.stdout.strip(); r2=subprocess.run(['git','symbolic-ref','--short','refs/remotes/origin/HEAD'],capture_output=True,text=True) if not b else None; print(b or r2.stdout.strip().replace('origin/','') if r2 else b or 'main')"`
+- Default branch: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" default-branch`
 - Commits ahead: !`DEF=$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null || echo main); git log --oneline "$DEF"..HEAD 2>/dev/null | head -20 || git log --oneline -10 2>/dev/null`
 - Diffstat: !`DEF=$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null || echo main); git diff "$DEF"...HEAD --stat 2>/dev/null | tail -40 || git diff HEAD --stat 2>/dev/null | tail -40`
 - gh available & authed: !`command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1 && echo "yes" || echo "no — will use fallback"`

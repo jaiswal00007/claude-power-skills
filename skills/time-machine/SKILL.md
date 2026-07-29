@@ -10,7 +10,7 @@ Bug to hunt: $ARGUMENTS
 ## 1. Establish the crime scene
 - Where the symptom lives: !`git grep -nI "$ARGUMENTS" 2>/dev/null | head -15 || echo "no literal match — search by symptom, not by the raw argument string"`
 - Recent history: !`git log --oneline -20 2>/dev/null`
-- Test runner: !`python3 -c "import os; runners=[('package.json','npm test'),('pyproject.toml','pytest'),('pytest.ini','pytest'),('Cargo.toml','cargo test'),('go.mod','go test ./...'),('pom.xml','mvn test')]; [print(r) for f,r in runners if os.path.exists(f)] or print('unknown')"`
+- Test runner: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" test-runner`
 
 ## 2. Choose the strategy
 **Preferred — automated bisect (when a repro command exists).**

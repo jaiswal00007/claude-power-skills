@@ -7,8 +7,8 @@ Prove the tests for $ARGUMENTS are real — not just green theater.
 
 ## Setup
 - The file: !`cat "$ARGUMENTS" 2>/dev/null | head -120 || echo "read the file named in the argument"`
-- Its tests: !`python3 -c "import subprocess,re,os; arg='$ARGUMENTS'; base=os.path.splitext(os.path.basename(arg))[0].lower(); files=subprocess.run(['git','ls-files'],capture_output=True,text=True).stdout.split(); [print(f) for f in files if re.search(r'(test|spec)',f,re.I) and base in f.lower()] or print('locate the test file for this source')"`
-- Test command: !`python3 -c "import os; runners=[('package.json','npm test'),('pyproject.toml','pytest'),('pytest.ini','pytest'),('Cargo.toml','cargo test'),('go.mod','go test ./...'),('pom.xml','mvn test')]; [print(r) for f,r in runners if os.path.exists(f)] or print('unknown')"`
+- Its tests: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" test-files-for "$ARGUMENTS"`
+- Test command: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" test-runner`
 - Baseline — confirm tests are GREEN before mutating: run the command above and record it.
 
 ## Inject mutations — ONE at a time

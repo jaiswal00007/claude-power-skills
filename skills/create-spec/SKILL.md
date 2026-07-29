@@ -9,7 +9,7 @@ Feature to specify: $ARGUMENTS
 
 Context to ground the spec:
 !`cat CLAUDE.md 2>/dev/null | head -60 || echo "no CLAUDE.md"`
-!`python3 -c "import subprocess,re; files=subprocess.run(['git','ls-files'],capture_output=True,text=True).stdout.split(); [print(f) for f in files if not re.search(r'(test|spec|node_modules|dist|build)',f,re.I)][:25]"`
+!`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" source-files`
 
 Write a complete specification:
 
@@ -38,7 +38,7 @@ Write a complete specification:
 
 ## PHASE 2 — Generate tests (after approval only)
 
-Detected test runner: !`python3 -c "import os; runners=[('package.json','npm test'),('pyproject.toml','pytest'),('pytest.ini','pytest'),('Cargo.toml','cargo test'),('go.mod','go test ./...'),('pom.xml','mvn test')]; [print(r) for f,r in runners if os.path.exists(f)] or print('unknown')"`
+Detected test runner: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" test-runner`
 
 - Generate a test file where **each spec bullet = one test case**.
 - Name each test after the business rule it verifies, not after the implementation.

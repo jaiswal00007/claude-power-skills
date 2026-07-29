@@ -15,7 +15,7 @@ Generate my standup for today.
 - Uncommitted work: !`git status --short 2>/dev/null | head -8`
 
 ## Blockers signal
-- Failing tests (best-effort, quick): !`python3 -c "import os; runners=[('package.json','run: npm test'),('pyproject.toml','run: pytest'),('pytest.ini','run: pytest'),('Cargo.toml','run: cargo test')]; [print(r) for f,r in runners if os.path.exists(f)] or print('no test runner detected')"`
+- Failing tests (best-effort, quick): !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" test-runner-check run`
 
 ## Output format
 ```

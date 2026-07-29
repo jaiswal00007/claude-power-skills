@@ -9,7 +9,7 @@ Audit the changes from the last 7 days and risk-rank them for human review.
 - Commits: !`git log --oneline --since="7 days ago" 2>/dev/null || echo "no history"`
 - Volume: !`git diff --stat "@{7.days.ago}" 2>/dev/null | tail -1 || git diff --stat HEAD~20 2>/dev/null | tail -1 || echo "n/a"`
 - Files touched: !`git diff --name-only "@{7.days.ago}" 2>/dev/null | head -40 || git diff --name-only HEAD~20 2>/dev/null | head -40`
-- Deletions: !`python3 -c "import subprocess; out=subprocess.run(['git','log','--diff-filter=D','--summary','--since=7 days ago'],capture_output=True,text=True).stdout; lines=[l for l in out.splitlines() if 'delete mode' in l.lower()]; [print(l) for l in lines[:12]] or print('none')"`
+- Deletions: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" git-deletions`
 
 ## High-risk surface (scan these diffs closely)
 - Auth / secrets: !`git diff "@{7.days.ago}" -- '*auth*' '*login*' '*password*' '*token*' '*secret*' '*.env*' 2>/dev/null | head -40 || echo "none touched"`

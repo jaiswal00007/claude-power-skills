@@ -7,7 +7,7 @@ description: Generate a complete, ready-to-save .claude/agents/ subagent file fr
 Create a subagent for: $ARGUMENTS
 
 ## Ground it in this repo
-- Layout: !`python3 -c "import subprocess; files=subprocess.run(['git','ls-files'],capture_output=True,text=True).stdout.split(); dirs=sorted(set(f.split('/')[0]+'/' for f in files if '/' in f)); [print(d) for d in dirs[:20]]"`
+- Layout: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" top-dirs`
 - Conventions: !`cat CLAUDE.md 2>/dev/null | head -40 || echo "no CLAUDE.md"`
 - Existing agents: !`ls .claude/agents/ 2>/dev/null || echo "none yet"`
 
