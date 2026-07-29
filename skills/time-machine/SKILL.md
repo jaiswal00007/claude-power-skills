@@ -1,7 +1,6 @@
 ---
 name: time-machine
 description: Find the exact commit that introduced a bug using automated git bisect, then explain how it broke
-trigger: /time-machine
 ---
 
 Bug to hunt: $ARGUMENTS

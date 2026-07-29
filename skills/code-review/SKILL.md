@@ -1,7 +1,6 @@
 ---
 name: code-review
 description: Fast diff-scoped multi-agent review — 3 parallel reviewers on the current changes + a SHIP/NEEDS-CHANGES/BLOCKED verdict
-trigger: /code-review
 ---
 
 Review the current uncommitted changes. Fast and diff-scoped — this runs repeatedly in the loop,

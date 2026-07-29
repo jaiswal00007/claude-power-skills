@@ -1,7 +1,6 @@
 ---
 name: ai-audit
 description: Weekly forensic audit of recent changes — risk-ranked for human review, surfaces the scary stuff first
-trigger: /ai-audit
 ---
 
 Audit the changes from the last 7 days and risk-rank them for human review.

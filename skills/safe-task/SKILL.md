@@ -1,7 +1,6 @@
 ---
 name: safe-task
 description: Safety checklist before any task — git snapshot, scope estimate, danger-zone check
-trigger: /safe-task
 ---
 
 Before starting any task, run this safety gate. Do NOT write code until it is complete.

@@ -1,7 +1,6 @@
 ---
 name: mutation-test
 description: Prove your tests actually catch bugs by injecting subtle mutations and checking if tests fail
-trigger: /mutation-test
 ---
 
 Prove the tests for $ARGUMENTS are real — not just green theater.

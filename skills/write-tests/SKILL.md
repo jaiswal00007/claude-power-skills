@@ -1,7 +1,6 @@
 ---
 name: write-tests
 description: Write meaningful tests for a file or the current diff — auto-detects the framework, names tests after behavior, then runs them
-trigger: /write-tests
 ---
 
 Write tests for: $ARGUMENTS   (a file/path, or leave empty to test the current diff)

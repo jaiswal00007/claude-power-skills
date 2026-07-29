@@ -1,7 +1,6 @@
 ---
 name: onboard-me
 description: 5-minute codebase onboarding with a Mermaid architecture diagram — what it does, key files, what not to touch
-trigger: /onboard-me
 ---
 
 Onboard me to this codebase. I'm a new developer. Be concrete and cite real files.

@@ -2,7 +2,6 @@
 ---
 name: create-agent
 description: Generate a complete, ready-to-save .claude/agents/ subagent file from a name or description
-trigger: /create-agent
 ---
 
 Create a subagent for: $ARGUMENTS

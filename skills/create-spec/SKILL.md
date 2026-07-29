@@ -1,7 +1,6 @@
 ---
 name: create-spec
 description: Spec-driven development — write the spec first, turn each rule into a failing test, then implement
-trigger: /create-spec
 ---
 
 Feature to specify: $ARGUMENTS

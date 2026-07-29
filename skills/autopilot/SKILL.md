@@ -1,7 +1,6 @@
 ---
 name: autopilot
 description: Drive a GitHub issue from number to opened PR — fetch, plan, get approval, TDD, verify, open PR
-trigger: /autopilot
 ---
 
 Take issue #$ARGUMENTS from open issue to opened pull request. Gated — you stop for approval.

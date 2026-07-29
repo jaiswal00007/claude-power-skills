@@ -1,7 +1,6 @@
 ---
 name: scope-check
 description: Analyze the blast radius of a task before writing any code — files, importers, tests, risk score
-trigger: /scope-check
 ---
 
 Task: $ARGUMENTS

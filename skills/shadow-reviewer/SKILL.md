@@ -1,7 +1,6 @@
 ---
 name: shadow-reviewer
 description: Adversarial multi-agent code review — three skeptical reviewers try to break your diff, then a judge delivers a ship verdict
-trigger: /shadow-reviewer
 ---
 
 Run an adversarial review of the current uncommitted changes. Nobody here is trying to

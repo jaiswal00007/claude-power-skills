@@ -1,7 +1,6 @@
 ---
 name: standup
 description: Auto-generate your daily standup from git history, open PRs, and failing tests — sounds human, not like a report
-trigger: /standup
 ---
 
 Generate my standup for today.

@@ -1,7 +1,6 @@
 ---
 name: suggest-agents
 description: Analyze this repo and recommend which custom subagents to create, ranked by impact
-trigger: /suggest-agents
 ---
 
 Analyze this repository and recommend the subagents worth creating for it.

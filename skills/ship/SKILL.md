@@ -1,7 +1,6 @@
 ---
 name: ship
 description: Open a PR for the current branch with an auto-generated description from the diff and commits — graceful fallback if gh is missing
-trigger: /ship
 ---
 
 Open a pull request for the current branch. Extra context (e.g. `Closes #123`): $ARGUMENTS

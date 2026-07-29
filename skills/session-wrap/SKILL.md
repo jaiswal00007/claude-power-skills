@@ -1,7 +1,6 @@
 ---
 name: session-wrap
 description: End-of-session handoff — what was done, what's next, decisions made, and update CLAUDE.md
-trigger: /session-wrap
 ---
 
 This session is ending. Write a handoff so the next session starts warm, not cold.

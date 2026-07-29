@@ -1,7 +1,6 @@
 ---
 name: sonar-fix
 description: Fix coverage-gate failures — find the uncovered lines/branches and write meaningful tests, not filler
-trigger: /sonar-fix
 ---
 
 Fix coverage for: $ARGUMENTS
