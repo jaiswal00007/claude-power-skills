@@ -6,7 +6,7 @@ description: Analyze this repo and recommend which custom subagents to create, r
 Analyze this repository and recommend the subagents worth creating for it.
 
 ## Repo signals
-- Top-level layout: !`git ls-files 2>/dev/null | awk -F/ 'NF>1{print $1"/"}' | sort -u | head -25`
+- Top-level layout: !`git ls-files 2>/dev/null | sed -n 's/\/.*/\//p' | sort -u | head -25`
 - File-type mix: !`git ls-files 2>/dev/null | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -10`
 - Manifests: !`ls package.json pyproject.toml Cargo.toml go.mod pom.xml 2>/dev/null`
 - Test footprint: !`git ls-files 2>/dev/null | grep -iE '(test|spec)' | wc -l | tr -d ' '` test files
