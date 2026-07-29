@@ -9,10 +9,10 @@ Write tests for: $ARGUMENTS   (a file/path, or leave empty to test the current d
 No filler tests that only exist to touch a line.**
 
 ## 1. Figure out what to test
-- Target (from `$ARGUMENTS`, else the diff): !`if [ -n "$ARGUMENTS" ]; then echo "$ARGUMENTS"; else git diff HEAD --name-only 2>/dev/null | grep -ivE '(test|spec)' | head -10 || echo "(specify a file)"; fi`
+- Target (from `$ARGUMENTS`, else the diff): !`if [ -n "$ARGUMENTS" ]; then echo "$ARGUMENTS"; else git diff HEAD --name-only 2>/dev/null | python3 -c "import sys,re; [print(f) for f in sys.stdin.read().split() if not re.search(r'(test|spec)',f,re.I)]" | head -10 || echo "(specify a file)"; fi`
 - Source under test: !`test -n "$ARGUMENTS" && cat "$ARGUMENTS" 2>/dev/null | head -120 || echo "read the target file(s) above"`
-- Framework & runner: !`test -f package.json && (grep -qE '"(vitest|jest)"' package.json && echo "node: $(grep -oE 'vitest|jest' package.json | head -1)" || echo "node: check package.json test script"); test -f pyproject.toml -o -f pytest.ini && echo "python: pytest"; test -f Cargo.toml && echo "rust: cargo test"; test -f go.mod && echo "go: testing pkg"; test -f pom.xml && echo "java: junit/maven"; true`
-- Existing tests to match style: !`git ls-files 2>/dev/null | grep -iE '(test|spec)' | head -8 || echo "no existing tests — establish a convention"`
+- Framework & runner: !`(test -f package.json && python3 -c "import json,sys; d=json.load(open('package.json')); deps={**d.get('dependencies',{}),**d.get('devDependencies',{})}; fw=next((k for k in ['vitest','jest'] if k in deps),'unknown'); print('node:',fw)" 2>/dev/null) || ({ test -f pyproject.toml || test -f pytest.ini; } && echo "python: pytest") || (test -f Cargo.toml && echo "rust: cargo test") || (test -f go.mod && echo "go: testing pkg") || (test -f pom.xml && echo "java: junit/maven") || echo "unknown"`
+- Existing tests to match style: !`git ls-files 2>/dev/null | python3 -c "import sys,re; [print(f) for f in sys.stdin.read().split() if re.search(r'(test|spec)',f,re.I)]" | head -8 || echo "no existing tests — establish a convention"`
 
 ## 2. Enumerate the cases (before writing code)
 List the behaviors to cover — happy path, validation, edge cases (null/empty/boundary), error

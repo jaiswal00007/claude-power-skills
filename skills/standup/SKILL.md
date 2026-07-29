@@ -15,7 +15,7 @@ Generate my standup for today.
 - Uncommitted work: !`git status --short 2>/dev/null | head -8`
 
 ## Blockers signal
-- Failing tests (best-effort, quick): !`test -f package.json && echo "run: npm test"; test -f pyproject.toml -o -f pytest.ini && echo "run: pytest"; test -f Cargo.toml && echo "run: cargo test"; true`
+- Failing tests (best-effort, quick): !`test -f package.json && echo "run: npm test"; { test -f pyproject.toml || test -f pytest.ini; } && echo "run: pytest"; test -f Cargo.toml && echo "run: cargo test"; true`
 
 ## Output format
 ```

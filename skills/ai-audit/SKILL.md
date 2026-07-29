@@ -8,8 +8,8 @@ Audit the changes from the last 7 days and risk-rank them for human review.
 ## The week in changes
 - Commits: !`git log --oneline --since="7 days ago" 2>/dev/null || echo "no history"`
 - Volume: !`git diff --stat "@{7.days.ago}" 2>/dev/null | tail -1 || git diff --stat HEAD~20 2>/dev/null | tail -1 || echo "n/a"`
-- Files touched: !`git diff --name-only "@{7.days.ago}" 2>/dev/null | sort -u | head -40 || git diff --name-only HEAD~20 2>/dev/null | sort -u | head -40`
-- Deletions: !`git log --diff-filter=D --summary --since="7 days ago" 2>/dev/null | grep -i "delete mode" | head -12 || echo "none"`
+- Files touched: !`git diff --name-only "@{7.days.ago}" 2>/dev/null | head -40 || git diff --name-only HEAD~20 2>/dev/null | head -40`
+- Deletions: !`git log --diff-filter=D --summary --since="7 days ago" 2>/dev/null | python3 -c "import sys; [print(l) for l in sys.stdin.read().splitlines() if 'delete mode' in l.lower()]" | head -12 || echo "none"`
 
 ## High-risk surface (scan these diffs closely)
 - Auth / secrets: !`git diff "@{7.days.ago}" -- '*auth*' '*login*' '*password*' '*token*' '*secret*' '*.env*' 2>/dev/null | head -40 || echo "none touched"`

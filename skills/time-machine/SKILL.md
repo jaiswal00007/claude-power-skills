@@ -10,7 +10,7 @@ Bug to hunt: $ARGUMENTS
 ## 1. Establish the crime scene
 - Where the symptom lives: !`git grep -nI "$ARGUMENTS" 2>/dev/null | head -15 || echo "no literal match — search by symptom, not by the raw argument string"`
 - Recent history: !`git log --oneline -20 2>/dev/null`
-- Test runner: !`test -f package.json && echo "npm test"; test -f pyproject.toml -o -f pytest.ini && echo "pytest"; test -f Cargo.toml && echo "cargo test"; test -f go.mod && echo "go test ./..."; test -f pom.xml && echo "mvn test"; true`
+- Test runner: !`test -f package.json && echo "npm test"; { test -f pyproject.toml || test -f pytest.ini; } && echo "pytest"; test -f Cargo.toml && echo "cargo test"; test -f go.mod && echo "go test ./..."; test -f pom.xml && echo "mvn test"; true`
 
 ## 2. Choose the strategy
 **Preferred — automated bisect (when a repro command exists).**

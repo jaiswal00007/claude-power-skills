@@ -7,13 +7,13 @@ Onboard me to this codebase. I'm a new developer. Be concrete and cite real file
 
 ## Signals (language-agnostic)
 - README: !`cat README* 2>/dev/null | head -60 || echo "no README"`
-- File-type breakdown: !`git ls-files 2>/dev/null | grep -oE '\.[^.]+$' | sort | uniq -c | sort -rn | head -10`
-- Top-level layout: !`git ls-files 2>/dev/null | grep -oE '^[^/]+/' | sort -u | head -25`
+- File-type breakdown: !`git ls-files 2>/dev/null | python3 -c "import sys,collections; exts=collections.Counter(f.rsplit('.',1)[-1] if '.' in f else '(none)' for f in sys.stdin.read().split()); [print(f'{v:>6}  .{k}') for k,v in exts.most_common(10)]" 2>/dev/null || echo "n/a"`
+- Top-level layout: !`git ls-files 2>/dev/null | python3 -c "import sys; dirs=sorted(set(f.split('/')[0]+'/' for f in sys.stdin.read().split() if '/' in f)); [print(d) for d in dirs[:25]]" 2>/dev/null || echo "n/a"`
 - Manifests / entry points: !`ls package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle Makefile 2>/dev/null`
-- Package scripts (if node): !`test -f package.json && grep -A15 '"scripts"' package.json | head -17 || echo "n/a"`
+- Package scripts (if node): !`test -f package.json && python3 -c "import json; d=json.load(open('package.json')); [print(k+':',v) for k,v in d.get('scripts',{}).items()]" 2>/dev/null | head -17 || echo "n/a"`
 - Route/handler surface: !`git grep -nIE "(router\.|app\.(get|post|put|delete)|@(app|router)\.(route|get|post)|http\.HandleFunc|@RequestMapping)" 2>/dev/null | head -20 || echo "no obvious web routes"`
-- Data models: !`git ls-files 2>/dev/null | grep -iE '(schema|model|entity|migration)' | head -12`
-- Test count: !`git ls-files 2>/dev/null | grep -iE '(test|spec)' | wc -l | tr -d ' '`
+- Data models: !`git ls-files 2>/dev/null | python3 -c "import sys,re; [print(f) for f in sys.stdin.read().split() if re.search(r'(schema|model|entity|migration)',f,re.I)]" | head -12`
+- Test count: !`git ls-files 2>/dev/null | python3 -c "import sys,re; files=[f for f in sys.stdin.read().split() if re.search(r'(test|spec)',f,re.I)]; print(len(files))"`
 
 ## Output a structured guide
 

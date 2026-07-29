@@ -9,7 +9,7 @@ Fix coverage for: $ARGUMENTS
 
 ## 1. Understand the target
 - The file: !`cat "$ARGUMENTS" 2>/dev/null | head -120 || echo "read the file(s) named in the argument"`
-- Its existing tests: !`git ls-files 2>/dev/null | grep -iE '(test|spec)' | grep -i "$(basename "$ARGUMENTS" | sed 's/\.[^.]*$//')" || echo "no obvious test file — you'll create one"`
+- Its existing tests: !`git ls-files 2>/dev/null | python3 -c "import sys,os; arg='$ARGUMENTS'; base=os.path.splitext(os.path.basename(arg))[0].lower(); [print(f) for f in sys.stdin.read().split() if ('test' in f.lower() or 'spec' in f.lower()) and base in f.lower()]" | head -8 || echo "no obvious test file — you'll create one"`
 - Coverage config, if any: !`cat sonar-project.properties 2>/dev/null | grep -i coverage; cat jest.config.* vitest.config.* 2>/dev/null | grep -i coverage; grep -i 'cov' pyproject.toml setup.cfg 2>/dev/null; true`
 
 ## 2. Measure current coverage for this file
