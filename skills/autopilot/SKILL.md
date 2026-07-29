@@ -8,8 +8,8 @@ Take issue #$ARGUMENTS from open issue to opened pull request. Gated — you sto
 ## 1. Load context
 - The issue: !`gh issue view $ARGUMENTS 2>/dev/null || echo "gh not available or issue not found — paste the issue text and continue"`
 - Project conventions: !`cat CLAUDE.md 2>/dev/null | head -80 || echo "no CLAUDE.md"`
-- Default branch: !`gh repo view --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null || git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | python3 -c "import sys; print(sys.stdin.read().strip().replace('origin/',''))" || echo main`
-- Test runner: !`test -f package.json && echo "npm test"; { test -f pyproject.toml || test -f pytest.ini; } && echo "pytest"; test -f Cargo.toml && echo "cargo test"; test -f go.mod && echo "go test ./..."; test -f pom.xml && echo "mvn test"; true`
+- Default branch: !`python3 -c "import subprocess; r=subprocess.run(['gh','repo','view','--json','defaultBranchRef','-q','.defaultBranchRef.name'],capture_output=True,text=True); b=r.stdout.strip(); r2=subprocess.run(['git','symbolic-ref','--short','refs/remotes/origin/HEAD'],capture_output=True,text=True) if not b else None; print(b or r2.stdout.strip().replace('origin/','') if r2 else b or 'main')"`
+- Test runner: !`python3 -c "import os; runners=[('package.json','npm test'),('pyproject.toml','pytest'),('pytest.ini','pytest'),('Cargo.toml','cargo test'),('go.mod','go test ./...'),('pom.xml','mvn test')]; [print(r) for f,r in runners if os.path.exists(f)] or print('unknown')"`
 
 ## 2. Plan (STOP here)
 - Create a working branch: !`git checkout -b "autopilot/issue-$ARGUMENTS" 2>/dev/null && echo "on new branch" || echo "branch exists — reusing"`

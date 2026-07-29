@@ -15,7 +15,7 @@ Generate my standup for today.
 - Uncommitted work: !`git status --short 2>/dev/null | head -8`
 
 ## Blockers signal
-- Failing tests (best-effort, quick): !`test -f package.json && echo "run: npm test"; { test -f pyproject.toml || test -f pytest.ini; } && echo "run: pytest"; test -f Cargo.toml && echo "run: cargo test"; true`
+- Failing tests (best-effort, quick): !`python3 -c "import os; runners=[('package.json','run: npm test'),('pyproject.toml','run: pytest'),('pytest.ini','run: pytest'),('Cargo.toml','run: cargo test')]; [print(r) for f,r in runners if os.path.exists(f)] or print('no test runner detected')"`
 
 ## Output format
 ```

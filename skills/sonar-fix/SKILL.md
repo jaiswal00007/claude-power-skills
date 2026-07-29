@@ -9,8 +9,8 @@ Fix coverage for: $ARGUMENTS
 
 ## 1. Understand the target
 - The file: !`cat "$ARGUMENTS" 2>/dev/null | head -120 || echo "read the file(s) named in the argument"`
-- Its existing tests: !`git ls-files 2>/dev/null | python3 -c "import sys,os; arg='$ARGUMENTS'; base=os.path.splitext(os.path.basename(arg))[0].lower(); [print(f) for f in sys.stdin.read().split() if ('test' in f.lower() or 'spec' in f.lower()) and base in f.lower()]" | head -8 || echo "no obvious test file — you'll create one"`
-- Coverage config, if any: !`cat sonar-project.properties 2>/dev/null | grep -i coverage; cat jest.config.* vitest.config.* 2>/dev/null | grep -i coverage; grep -i 'cov' pyproject.toml setup.cfg 2>/dev/null; true`
+- Its existing tests: !`python3 -c "import subprocess,re,os; arg='$ARGUMENTS'; base=os.path.splitext(os.path.basename(arg))[0].lower(); files=subprocess.run(['git','ls-files'],capture_output=True,text=True).stdout.split(); found=[f for f in files if re.search(r'(test|spec)',f,re.I) and base in f.lower()]; [print(f) for f in found[:8]] or print('no obvious test file — you will create one')"`
+- Coverage config, if any: !`python3 -c "import os,json; files=['sonar-project.properties','pyproject.toml','setup.cfg']+[f for f in os.listdir('.') if f.startswith(('jest.config','vitest.config'))]; [print(l) for fn in files if os.path.exists(fn) for l in open(fn).read().splitlines() if 'cov' in l.lower()] or print('no coverage config found')"`
 
 ## 2. Measure current coverage for this file
 Pick the command that matches the project (run only the relevant one):

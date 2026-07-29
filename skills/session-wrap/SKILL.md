@@ -8,7 +8,7 @@ This session is ending. Write a handoff so the next session starts warm, not col
 ## Evidence of this session's work
 - Changed files: !`git status --short 2>/dev/null; git diff --name-only HEAD 2>/dev/null | head -30`
 - Commits made: !`git log --oneline -8 2>/dev/null`
-- Test state (best-effort): !`test -f package.json && echo "check: npm test"; { test -f pyproject.toml || test -f pytest.ini; } && echo "check: pytest"; test -f Cargo.toml && echo "check: cargo test"; true`
+- Test state (best-effort): !`python3 -c "import os; runners=[('package.json','check: npm test'),('pyproject.toml','check: pytest'),('pytest.ini','check: pytest'),('Cargo.toml','check: cargo test')]; [print(r) for f,r in runners if os.path.exists(f)] or print('no test runner detected')"`
 
 ## Produce the handoff document
 

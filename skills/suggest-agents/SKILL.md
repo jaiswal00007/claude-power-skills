@@ -6,10 +6,10 @@ description: Analyze this repo and recommend which custom subagents to create, r
 Analyze this repository and recommend the subagents worth creating for it.
 
 ## Repo signals
-- Top-level layout: !`git ls-files 2>/dev/null | python3 -c "import sys; dirs=sorted(set(f.split('/')[0]+'/' for f in sys.stdin.read().split() if '/' in f)); [print(d) for d in dirs[:25]]" 2>/dev/null || echo "n/a"`
-- File-type mix: !`git ls-files 2>/dev/null | python3 -c "import sys,collections; exts=collections.Counter(f.rsplit('.',1)[-1] if '.' in f else '(none)' for f in sys.stdin.read().split()); [print(f'{v:>6}  {k}') for k,v in exts.most_common(10)]" 2>/dev/null || echo "n/a"`
-- Manifests: !`ls package.json pyproject.toml Cargo.toml go.mod pom.xml 2>/dev/null`
-- Test footprint: !`git ls-files 2>/dev/null | python3 -c "import sys,re; print(sum(1 for f in sys.stdin.read().split() if re.search(r'(test|spec)',f,re.I)))"` test files
+- Top-level layout: !`python3 -c "import subprocess; files=subprocess.run(['git','ls-files'],capture_output=True,text=True).stdout.split(); dirs=sorted(set(f.split('/')[0]+'/' for f in files if '/' in f)); [print(d) for d in dirs[:25]]"`
+- File-type mix: !`python3 -c "import subprocess,collections; files=subprocess.run(['git','ls-files'],capture_output=True,text=True).stdout.split(); exts=collections.Counter(f.rsplit('.',1)[-1] if '.' in f else '(none)' for f in files); [print(f'{v:>6}  {k}') for k,v in exts.most_common(10)]"`
+- Manifests: !`python3 -c "import os; [print(f) for f in ['package.json','pyproject.toml','Cargo.toml','go.mod','pom.xml'] if os.path.exists(f)]"`
+- Test footprint: !`python3 -c "import subprocess,re; files=subprocess.run(['git','ls-files'],capture_output=True,text=True).stdout.split(); print(sum(1 for f in files if re.search(r'(test|spec)',f,re.I)))"` test files
 - Conventions: !`cat CLAUDE.md 2>/dev/null | head -40 || echo "no CLAUDE.md"`
 - Existing agents: !`ls .claude/agents/ 2>/dev/null || echo "none yet"`
 

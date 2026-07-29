@@ -9,7 +9,7 @@ validate the code — every reviewer is trying to break it.
 ## The diff under review
 !`git diff HEAD 2>/dev/null | head -400 || echo "no git diff — review the most recently changed files instead"`
 Changed files: !`git diff HEAD --name-only 2>/dev/null || echo "(none detected)"`
-Test runner present: !`test -f package.json && echo "npm/node"; { test -f pyproject.toml || test -f pytest.ini || test -f setup.py; } && echo "python/pytest"; test -f Cargo.toml && echo "cargo"; test -f go.mod && echo "go"; test -f pom.xml && echo "maven"; true`
+Test runner present: !`python3 -c "import os; runners=[('package.json','npm/node'),('pyproject.toml','python/pytest'),('pytest.ini','python/pytest'),('setup.py','python/pytest'),('Cargo.toml','cargo'),('go.mod','go'),('pom.xml','maven')]; [print(r) for f,r in runners if os.path.exists(f)] or print('unknown')"`
 
 ## How to run it
 Spawn **three reviewers in parallel** using the Agent tool — one message, three tool calls —

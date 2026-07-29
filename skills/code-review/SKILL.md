@@ -9,7 +9,7 @@ so keep it tight. Optional focus paths: $ARGUMENTS
 ## The diff under review
 !`git diff HEAD 2>/dev/null | head -400 || echo "no git diff — review the most recently changed files instead"`
 Changed files: !`git diff HEAD --name-only 2>/dev/null || echo "(none detected)"`
-Test runner present: !`test -f package.json && echo "npm test"; { test -f pyproject.toml || test -f pytest.ini; } && echo "pytest"; test -f Cargo.toml && echo "cargo test"; test -f go.mod && echo "go test ./..."; test -f pom.xml && echo "mvn test"; true`
+Test runner present: !`python3 -c "import os; runners=[('package.json','npm test'),('pyproject.toml','pytest'),('pytest.ini','pytest'),('Cargo.toml','cargo test'),('go.mod','go test ./...'),('pom.xml','mvn test')]; [print(r) for f,r in runners if os.path.exists(f)] or print('unknown')"`
 
 ## How to run it
 Spawn **three reviewers in parallel** via the Agent tool — one message, three tool calls — each
