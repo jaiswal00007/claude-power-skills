@@ -7,8 +7,8 @@ Onboard me to this codebase. I'm a new developer. Be concrete and cite real file
 
 ## Signals (language-agnostic)
 - README: !`cat README* 2>/dev/null | head -60 || echo "no README"`
-- File-type breakdown: !`git ls-files 2>/dev/null | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -10`
-- Top-level layout: !`git ls-files 2>/dev/null | sed -n 's/\/.*/\//p' | sort -u | head -25`
+- File-type breakdown: !`git ls-files 2>/dev/null | grep -oE '\.[^.]+$' | sort | uniq -c | sort -rn | head -10`
+- Top-level layout: !`git ls-files 2>/dev/null | grep -oE '^[^/]+/' | sort -u | head -25`
 - Manifests / entry points: !`ls package.json pyproject.toml Cargo.toml go.mod pom.xml build.gradle Makefile 2>/dev/null`
 - Package scripts (if node): !`test -f package.json && grep -A15 '"scripts"' package.json | head -17 || echo "n/a"`
 - Route/handler surface: !`git grep -nIE "(router\.|app\.(get|post|put|delete)|@(app|router)\.(route|get|post)|http\.HandleFunc|@RequestMapping)" 2>/dev/null | head -20 || echo "no obvious web routes"`
