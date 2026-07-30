@@ -1,16 +1,37 @@
 ---
 name: session-wrap
-description: End-of-session handoff — what was done, what's next, decisions made, and update CLAUDE.md
+description: Use at the end of a working session to produce a handoff document and update CLAUDE.md — so the next session starts warm with full context about what was done, what's next, and what to avoid
 ---
 
-This session is ending. Write a handoff so the next session starts warm, not cold.
+# session-wrap
 
-## Evidence of this session's work
-- Changed files: !`git status --short 2>/dev/null; git diff --name-only HEAD 2>/dev/null | head -30`
-- Commits made: !`git log --oneline -8 2>/dev/null`
-- Test state (best-effort): !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" test-runner-check check`
+## Overview
 
-## Produce the handoff document
+End-of-session handoff that grounds itself in real git evidence. Produces a structured document covering what was accomplished, what's unfinished, decisions made, and landmines discovered. Persists the document and updates `CLAUDE.md` with any new conventions found.
+
+## When to Use
+
+- "Wrap up the session"
+- Before handing off to another agent or developer
+- At natural stopping points during long tasks
+
+## Core Pattern
+
+### Step 1 — Gather evidence
+
+```bash
+# Changed files
+git status --short 2>/dev/null
+git diff --name-only HEAD 2>/dev/null | head -30
+
+# Commits made this session
+git log --oneline -8 2>/dev/null
+
+# Test state (best-effort)
+# Run whatever test runner is present; record pass/fail/unknown
+```
+
+### Step 2 — Produce the handoff document
 
 ```
 # Session handoff — <today's date>
@@ -34,7 +55,13 @@ This session is ending. Write a handoff so the next session starts warm, not col
 - Tests: <pass/fail/unknown>   Branch: <name>   Uncommitted: <yes/no>
 ```
 
-## Persist it
+### Step 3 — Persist it
+
 1. Save to `.claude/session-notes/session-<YYYY-MM-DD>.md` (create the folder if needed).
-2. Update `CLAUDE.md` with any new convention, pattern, or warning discovered this session —
-   append, don't overwrite. Keep additions terse and factual.
+2. Update `CLAUDE.md` with any new convention, pattern, or warning discovered this session — append, don't overwrite. Keep additions terse and factual.
+
+## Common Mistakes
+
+- **Vague "accomplished" entries** — ground every bullet in a real file path or commit; "worked on auth" is useless.
+- **Skipping CLAUDE.md update** — conventions discovered this session should be persisted so future sessions don't rediscover them.
+- **Omitting landmines** — surprises that bit you this session are the highest-value thing to pass forward.

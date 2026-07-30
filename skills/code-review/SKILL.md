@@ -1,31 +1,48 @@
 ---
 name: code-review
-description: Fast diff-scoped multi-agent review — 3 parallel reviewers on the current changes + a SHIP/NEEDS-CHANGES/BLOCKED verdict
+description: Use when you want a fast diff-scoped review of the current uncommitted changes — spawns three parallel reviewers and delivers a SHIP/NEEDS-CHANGES/DO-NOT-MERGE verdict
 ---
 
-Review the current uncommitted changes. Fast and diff-scoped — this runs repeatedly in the loop,
-so keep it tight. Optional focus paths: $ARGUMENTS
+# code-review
 
-## The diff under review
-!`git diff HEAD 2>/dev/null | head -400 || echo "no git diff — review the most recently changed files instead"`
-Changed files: !`git diff HEAD --name-only 2>/dev/null || echo "(none detected)"`
-Test runner present: !`bash "${CLAUDE_PLUGIN_ROOT}/scripts/signals.sh" test-runner`
+## Overview
 
-## How to run it
-Spawn **three reviewers in parallel** via the Agent tool — one message, three tool calls — each
-given the diff above and ONE lens. **Review only the changed lines.** Each reviewer caps at its
-top 5 findings, returned as `file:line — severity — problem`.
+Fast, diff-scoped multi-agent review of the current working-tree changes. Three parallel reviewers each focus on one lens, then a judge synthesizes a verdict. Designed to run repeatedly in a dev loop — tight and focused on changed lines only.
 
-1. **Correctness & edge-cases** — nulls, empty collections, off-by-one, concurrency/races, error
-   paths that swallow failures, behavior of existing code the diff touches.
+## When to Use
+
+- After making changes, before opening a PR
+- Repeatedly during a dev loop to catch issues early
+- When you want a structured severity-ranked verdict
+
+**Not for:** full working-tree audit of committed code (use `/shadow-reviewer`).
+
+## Core Pattern
+
+### Step 1 — Gather the diff
+
+```bash
+git diff HEAD 2>/dev/null | head -400
+git diff HEAD --name-only 2>/dev/null
+```
+
+Detect the test runner (look for `package.json`, `pytest.ini`, `go.mod`, `Makefile`, etc.).
+
+### Step 2 — Spawn three reviewers in parallel
+
+One message, three Agent tool calls. Give each reviewer the diff and exactly ONE lens. Each caps at top 5 findings, returned as `file:line — severity — problem`. **Review only the changed lines.**
+
+1. **Correctness & edge-cases** — nulls, empty collections, off-by-one, concurrency/races, error paths that swallow failures, behavior of existing code the diff touches.
 2. **Security & data** — injection, auth/authz gaps, leaked secrets, unsafe eval/SQL/shell, PII.
-3. **Operability** — the 3am-pager view: missing logs/metrics, unbounded retries, resource leaks,
-   silent failures, config that differs in prod.
+3. **Operability** — the 3am-pager view: missing logs/metrics, unbounded retries, resource leaks, silent failures, config that differs in prod.
 
-Then **run the detected test runner** and record pass/fail.
+### Step 3 — Run the test suite
 
-## Verdict (you, after the three return)
-De-duplicate, rank by severity, emit exactly this block:
+Run the detected test runner. Record pass/fail.
+
+### Step 4 — Deliver the verdict (you, after all three return)
+
+De-duplicate, rank by severity:
 
 ```
 CODE REVIEW VERDICT
@@ -40,5 +57,8 @@ VERDICT: SHIP  |  NEEDS CHANGES  |  DO NOT MERGE
 
 Every claim cites file + line. If a reviewer over-flagged, say so.
 
-> Note: this is the fast, repeat-callable, diff-scoped review. For a heavier standalone audit of
-> the full working tree, use `/shadow-reviewer`.
+## Common Mistakes
+
+- **Reviewing the whole file instead of the diff** — review only changed lines.
+- **Running reviewers sequentially** — they must run in parallel (one message, three tool calls).
+- **Omitting the test run** — the Tests line in the verdict is required.
