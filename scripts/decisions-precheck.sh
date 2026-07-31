@@ -16,7 +16,7 @@ if [ -z "$TURN_TEXT" ]; then
   exit 1
 fi
 
-WORD_COUNT=$(echo "$TURN_TEXT" | wc -w | tr -d ' ')
+WORD_COUNT=$(printf '%s' "$TURN_TEXT" | wc -w | tr -d ' ')
 
 if [ "$WORD_COUNT" -lt "$MIN_WORDS" ]; then
   # Turn too short to contain decisions — skip agent

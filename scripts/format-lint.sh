@@ -24,13 +24,13 @@ warn=""
 # run a command if its binary exists; capture stderr tail on failure
 try() {
   command -v "$1" >/dev/null 2>&1 || return 1
-  local out
-  if out="$("$@" 2>&1)"; then
-    return 0
-  else
+  local out rc
+  out="$("$@" 2>&1)"; rc=$?
+  if [ $rc -ne 0 ]; then
     warn="${warn}${warn:+; }$1: $(printf '%s' "$out" | tail -1)"
-    return 0   # non-fatal — we still exit 0
+    return $rc
   fi
+  return 0
 }
 
 case "$ext" in

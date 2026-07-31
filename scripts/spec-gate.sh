@@ -28,18 +28,17 @@ if [ -n "$SPEC_FOUND" ]; then
 fi
 
 cat >&2 <<'EOF'
-SPEC GATE BLOCKED
+SPEC GATE: No specification found for this feature.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-No specification found for this feature.
+The edit has been written to disk (PostToolUse fires after edits).
+Remaining hooks in this chain have been aborted.
 
 Expected one of:
   .claude/specs/<feature>.md
   spec.md (repo root)
 
-Run /create-spec <feature-name> first, get the spec approved,
-then return to editing.
-
-No files have been changed.
+Run /create-spec <feature-name>, get the spec approved,
+then continue editing.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 exit 1

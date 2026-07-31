@@ -10,7 +10,7 @@ set -uo pipefail
 
 THRESHOLD="${TOKEN_BUDGET_WARN:-80000}"
 
-DIFF_WORDS=$(git diff HEAD 2>/dev/null | wc -w | tr -d ' ')
+DIFF_WORDS=$(git rev-parse HEAD 2>/dev/null && git diff HEAD 2>/dev/null | wc -w | tr -d ' ' || echo 0)
 DECISIONS_WORDS=$(wc -w < decisions.md 2>/dev/null | tr -d ' ' || echo 0)
 ESTIMATE=$(( (DIFF_WORDS + DECISIONS_WORDS) * 4 / 3 ))
 
