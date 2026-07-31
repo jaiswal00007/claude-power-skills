@@ -8,7 +8,7 @@
       "name": "claude-power-skills",
       "source": "./",
       "description": "20 engineering-discipline skills + automatic hooks (format, lint, explain-every-change, spec-gate, decisions-logger, Stop review-gate). One install gets the full loop.",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "author": {
         "name": "claude-power-skills contributors"
       }

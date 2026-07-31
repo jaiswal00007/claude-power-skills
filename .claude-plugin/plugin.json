@@ -1,6 +1,6 @@
 {
   "name": "claude-power-skills",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "20 engineering-discipline skills + automatic hooks (format, lint, explain-every-change, and a Stop review-gate) for Claude Code — one install gets the whole spec -> implement -> review -> ship -> standup loop.",
   "author": { "name": "claude-power-skills contributors" }
 }
