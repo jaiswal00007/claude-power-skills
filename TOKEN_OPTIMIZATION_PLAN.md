@@ -94,7 +94,7 @@ plan.md                 ← read current task only
 
 **Cost signal:** After this step, every subsequent turn reads the 4 files from cache at 10% of base input cost.
 
-**Exit condition:** 4 files exist at repo root, `.claude/specs/` exists, cache breakpoint visible in `context.md`.
+**Exit condition:** 4 files exist at repo root, `.claude/specs/` exists, cache breakpoint visible in `context.md`. Note: `spec.md` and `plan.md` are empty stubs at this point — `/create-spec` fills `spec.md`, writing-plans fills `plan.md`.
 
 **Fill in `context.md` now** — the more accurate it is, the more you save:
 ```markdown
